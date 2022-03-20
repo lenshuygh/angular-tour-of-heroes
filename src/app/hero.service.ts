@@ -5,21 +5,25 @@ import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
 import { MessageService } from './message.service';
 import { catchError, map, tap } from 'rxjs';
+import { APP_CONFIG, HERO_API_CONFIG } from './app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroService {
-  private heroesUrl = 'api/heroes'; // URL to web API
+  private heroesUrl!: string;
+  heroesurl = HERO_API_CONFIG.heroesApiSource == 'external' ? 
+    this.heroesUrl = HERO_API_CONFIG.heroesUrl_external : 
+    this.heroesUrl = HERO_API_CONFIG.heroesUrl_mocked;
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   }
-
+  
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
       .pipe(
-        tap(_ => this.log("fetched heroes from API")),
+        tap(_ => this.log(`fetched heroes from ${this.heroesUrl}`)),
         catchError(this.handleError<Hero[]>('getHeroes', []))
       );
   }

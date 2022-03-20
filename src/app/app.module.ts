@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
+import { APP_CONFIG, HERO_API_CONFIG } from './app.config';
+
 
 @NgModule({
   declarations: [
@@ -26,11 +28,11 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
+    HERO_API_CONFIG.heroesApiSource == 'mocked' ? HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, {dataEncapsulation: false}
-    )
+    ) : []
   ],
-  providers: [],
+  providers: [{ provide: APP_CONFIG, useValue: HERO_API_CONFIG }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

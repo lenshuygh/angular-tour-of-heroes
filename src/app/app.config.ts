@@ -7,7 +7,7 @@ export interface AppConfig{
 }
 
 export const HERO_API_CONFIG: AppConfig = {
-    heroesApiSource: 'external',
+    heroesApiSource: 'mocked',
     heroesUrl_external: 'http://angulartests.mocklab.io',
     heroesUrl_mocked: 'api/heroes'
 }
